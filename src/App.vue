@@ -43,8 +43,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import BaseInput from './components/BaseInput.vue'
-import BaseSelect from './components/BaseSelect.vue'
 
 const categories = ref([
   'sustainability',
