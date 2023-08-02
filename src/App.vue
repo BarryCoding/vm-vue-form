@@ -15,15 +15,9 @@
       <BaseInput label="Location" type="text" v-model="event.location" />
 
       <h3>Are pets allowed?</h3>
-      <div>
-        <input type="radio" v-model="event.pets" :value="1" name="pets" />
-        <label>Yes</label>
-      </div>
 
-      <div>
-        <input type="radio" v-model="event.pets" :value="0" name="pets" />
-        <label>No</label>
-      </div>
+      <BaseRadioGroup :options="radioOptions" name="pet" v-model="event.pets" />
+      <!-- <BaseRadioGroup horizontal :options="radioOptions" name="pet" v-model="event.pets" /> -->
 
       <h3>Extras</h3>
       <div>
@@ -57,10 +51,15 @@ const event = ref({
   title: '',
   description: '',
   location: '',
-  pets: 1,
+  pets: '',
   extras: {
     catering: false,
     music: false
   }
 })
+
+const radioOptions = ref([
+  { label: 'No', value: '0' },
+  { label: 'Yes', value: '1' }
+])
 </script>
