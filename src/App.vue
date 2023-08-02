@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Create an event</h1>
-    <form>
+    <form @submit.prevent="submitForm">
       <BaseSelect label="Select a category" v-model="event.category" :options="categories" />
 
       <h3>Name & describe your event</h3>
@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import axios from 'axios'
 
 const categories = ref([
   'sustainability',
@@ -62,4 +63,12 @@ const radioOptions = ref([
   { label: 'No', value: '0' },
   { label: 'Yes', value: '1' }
 ])
+
+async function submitForm() {
+  const res = await axios.post(
+    'https://my-json-server.typicode.com/Code-Pop/Vue-3-Forms/events',
+    event.value
+  )
+  console.log(`🚀 ~ file: App.vue:69 ~ submitForm ~ res:`, res)
+}
 </script>
