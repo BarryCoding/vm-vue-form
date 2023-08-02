@@ -27,13 +27,11 @@
 
       <h3>Extras</h3>
       <div>
-        <input type="checkbox" v-model="event.extras.catering" class="field" />
-        <label>Catering</label>
+        <BaseCheckbox label="Catering" v-model="event.extras.catering" />
       </div>
 
       <div>
-        <input type="checkbox" v-model="event.extras.music" class="field" />
-        <label>Live music</label>
+        <BaseCheckbox label="Live music" v-model="event.extras.music" />
       </div>
 
       <button class="button -fill-gradient" type="submit">Submit</button>
