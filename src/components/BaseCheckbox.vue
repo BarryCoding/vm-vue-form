@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useId } from '@/composables/useId'
 import { useAttrs } from 'vue'
 const attrs = useAttrs()
+const fakeId = useId()
 
 interface Props {
   label: string
@@ -20,13 +22,14 @@ function handleChange(e: Event) {
 
 <template>
   <input
+    :id="fakeId"
     type="checkbox"
     class="field"
     v-bind="attrs"
     :checked="props.modelValue"
     @change="handleChange"
   />
-  <label>{{ props.label }}</label>
+  <label :for="fakeId">{{ props.label }}</label>
 </template>
 
 <style scoped></style>

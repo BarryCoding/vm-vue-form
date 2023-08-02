@@ -33,8 +33,9 @@ function handleChange(e: Event) {
       :checked="props.modelValue === value"
       :value="value"
       @change="handleChange"
+      :id="name + value"
     />
-    <label>{{ label }}</label>
+    <label :for="name + value">{{ label }}</label>
   </component>
 </template>
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useId } from '@/composables/useId'
 import { useAttrs } from 'vue'
 const attrs = useAttrs()
+const fakeId = useId()
 
 interface Props {
   label?: string
@@ -20,8 +22,8 @@ function onChange(e: Event) {
 </script>
 
 <template>
-  <label>{{ props.label }}</label>
-  <select v-bind="{ ...attrs, onChange }" :value="props.modelValue" class="field">
+  <label :for="fakeId">{{ props.label }}</label>
+  <select :id="fakeId" v-bind="{ ...attrs, onChange }" :value="props.modelValue" class="field">
     <option
       v-for="option in options"
       :value="option"
