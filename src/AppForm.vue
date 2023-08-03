@@ -50,6 +50,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import { object as zodObject, string as zodString, boolean as zodBoolean } from 'zod'
 
 const categories = ref([
   'sustainability',
@@ -66,39 +68,17 @@ const radioOptions = ref([
   { label: 'Yes', value: '1' }
 ])
 
-function required(value: string) {
-  const requiredMessage = 'This field is required'
-  if (!value) return requiredMessage
-
-  return true
-}
-
-function minLength(number: number, value: string) {
-  if (value.length < number) return 'Please type at least ' + number + ' characters'
-
-  return true
-}
-
-function anything() {
-  return true
-}
-const validationSchema = {
-  category: required,
-  title: (value: string) => {
-    const req = required(value)
-    if (req !== true) return req
-
-    const min = minLength(3, value)
-    if (min !== true) return min
-
-    return true
-  },
-  description: required,
-  location: undefined,
-  pets: anything,
-  catering: anything,
-  music: anything
-}
+const validationSchema = toTypedSchema(
+  zodObject({
+    category: zodString().nonempty('This field is required'),
+    title: zodString().nonempty('Zod needs a title').min(3, 'minimal length 3'),
+    description: zodString().nonempty('This field is required'),
+    location: zodString(),
+    pets: zodString(),
+    catering: zodBoolean(),
+    music: zodBoolean()
+  })
+)
 
 const { handleSubmit, errors } = useForm({
   validationSchema,
