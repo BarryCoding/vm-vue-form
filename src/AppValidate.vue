@@ -1,6 +1,12 @@
 <template>
   <form @submit.prevent="onSubmit">
-    <BaseInput label="Email" type="email" v-model="email" :error="emailError" />
+    <BaseInput
+      label="Email"
+      type="email"
+      :modelValue="email"
+      @change="handleChange"
+      :error="emailError"
+    />
 
     <BaseInput label="Password" type="password" v-model="password" :error="passwordError" />
 
@@ -19,11 +25,16 @@ const schema = {
   },
   password: (value: string) => {
     if (!value) return 'This Field is Required'
+    if (value.length <= 3) return 'Password is too short(Compare)'
     return true
   }
 }
 
-useForm({ validationSchema: schema })
+const { setFieldValue } = useForm({ validationSchema: schema })
+
+function handleChange(e: Event) {
+  setFieldValue('email', (e.target as HTMLInputElement).value)
+}
 
 const { value: email, errorMessage: emailError } = useField<string>('email')
 const { value: password, errorMessage: passwordError } = useField<string>('password')
