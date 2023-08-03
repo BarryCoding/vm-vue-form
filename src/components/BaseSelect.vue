@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { useId } from '@/composables/useId'
-import { useAttrs } from 'vue'
+import { computed, useAttrs } from 'vue'
 const attrs = useAttrs()
 const fakeId = useId()
 
 interface Props {
   label?: string
   modelValue?: string
+  error?: string
   options: string[]
 }
 
-const props = withDefaults(defineProps<Props>(), { label: '', modelValue: '' })
+const props = withDefaults(defineProps<Props>(), { label: '', modelValue: '', error: '' })
+const errorId = computed(() => (props.error ? 'error-' + fakeId : undefined))
+const invalid = computed(() => (props.error ? true : undefined))
 
 const emit = defineEmits<{
   'update:modelValue': [string]
@@ -23,7 +26,14 @@ function onChange(e: Event) {
 
 <template>
   <label :for="fakeId">{{ props.label }}</label>
-  <select :id="fakeId" v-bind="{ ...attrs, onChange }" :value="props.modelValue" class="field">
+  <select
+    :id="fakeId"
+    :aria-describedby="errorId"
+    :aria-invalid="invalid"
+    v-bind="{ ...attrs, onChange }"
+    :value="props.modelValue"
+    class="field"
+  >
     <option
       v-for="option in options"
       :value="option"
@@ -33,6 +43,8 @@ function onChange(e: Event) {
       {{ option }}
     </option>
   </select>
+
+  <p v-if="props.error" class="errorMessage" :id="errorId">{{ props.error }}</p>
 </template>
 
 <style scoped></style>
